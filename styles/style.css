@@ -35,9 +35,6 @@ header {
 header p, header pre {
 	font-size: 4em;
 }
-.game {
-	background: #434343;
-}
 .field {
 	width: 100%;
 	height: 100%;
