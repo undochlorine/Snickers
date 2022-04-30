@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Snickers</title>
+	<link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+	<div>
+		<header>
+			<pre style="display: inline;">Score: </pre><p id="score">0</p>
+		</header>
+		<div class="game">
+
+			<button class="play" id="play">
+				<span class="shadow"></span>
+				<span class="edge"></span>
+				<span class="front text">Play</span>
+			</button>
+
+			<div class="field" style="filter: blur(4px)">
+				<div class="counter-wrapper">
+					<pre>Count: </pre><pre id="count">0</pre>
+				</div>
+				<div id="player"></div>
+				<div id="enemy"></div>
+			</div>
+			
+			<div class="field_layer"></div>
+
+		</div>
+	</div>
+	<!-- SCRIPTS -->
+	<script src="./scripts/index.js" type="module"></script>
+</body>
+</html>
