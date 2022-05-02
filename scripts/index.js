@@ -30,27 +30,18 @@ const user = {
 		this._count.link.textContent = count
 	},
 	set setState(st) {
-		if( STATES.includes(st) )
-		this._state = st
-		if ( st == PLAY_STATE )
-			start()
-		else
-			fail()
+		if (STATES.includes(st)) {
+			this._state = st
+			if (st == PLAY_STATE)
+				start()
+			else
+				fail()
+		}
 	},
 	set setSpeed(speed) {
 		this._speed = speed
 		clearInterval(enemyMovingInterval)
-		enemyMovingInterval = setInterval(() => { enemyComing() }, user.speed);
-	},
-	switchState(st) {
-		if (st === undefined) {
-			if ( this.getState == PLAY_STATE )
-				this.setState = FAILED_STATE
-			else
-					this.setState = PLAY_STATE
-		} else if( STATES.includes(st) ){
-			this.setState = st
-		}
+		enemyMovingInterval = setInterval(() => { enemyComing() }, this.speed);
 	},
 	get getState() {
 		return this._state
@@ -117,9 +108,6 @@ function enemyComing() {
 let bottleAppearingInterval, enemyMovingInterval;
 
 function start() {
-	clearInterval(enemyComing)
-	clearInterval(bottleAppearing)
-
 	let i = 0;
 	player.setBottom = 0
 	player.setLeft = 0
@@ -134,7 +122,6 @@ function start() {
 	old_bottles.forEach(e => e.remove())
 	bottleAppearing(i)
 	bottleAppearingInterval = setInterval(() => { bottleAppearing(i); i++ }, 3000);
-	enemyMovingInterval = setInterval(() => { enemyComing() }, user.speed);
 	field_layer.link.onmousemove = e => mouseMove(e)
 
 	user.setSpeed = startSpeed
@@ -147,7 +134,7 @@ function fail() {
 	clearInterval(enemyMovingInterval)
 }
 
-playBtn.link.onclick = () => { user.switchState( PLAY_STATE ) }
+playBtn.link.onclick = () => { user.setState = PLAY_STATE }
 function collectedBottle() {
 	for (let i = 0; i < bottles.length; i++) {
 		if (bottles[i] === null)
