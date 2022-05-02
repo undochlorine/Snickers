@@ -8,7 +8,7 @@ const PLAY_STATE = 'playing at the moment';
 const FAILED_STATE = 'just failed';
 const STATES = [PLAY_STATE, FAILED_STATE]
 const bottles = [];
-const startSpeed = 30;
+const startSpeed = 20;
 
 const user = {
 	_speed: startSpeed,
@@ -145,7 +145,8 @@ function collectedBottle() {
 				user.setScore = user.count
 			bottles[i].remove()
 			bottles[i] = null
-			user.setSpeed = user.speed - user.speed*0.015
+			if(user.speed - Math.sqrt(user.speed * 0.001) >= 1)
+				user.setSpeed = user.speed - Math.sqrt(user.speed * 0.002)
 			continue;
 		}
 	}
