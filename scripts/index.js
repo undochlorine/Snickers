@@ -117,7 +117,9 @@ function enemyComing() {
 let bottleAppearingInterval, enemyMovingInterval;
 
 function start() {
-	user.setSpeed = startSpeed
+	clearInterval(enemyComing)
+	clearInterval(bottleAppearing)
+
 	let i = 0;
 	player.setBottom = 0
 	player.setLeft = 0
@@ -134,6 +136,8 @@ function start() {
 	bottleAppearingInterval = setInterval(() => { bottleAppearing(i); i++ }, 3000);
 	enemyMovingInterval = setInterval(() => { enemyComing() }, user.speed);
 	field_layer.link.onmousemove = e => mouseMove(e)
+
+	user.setSpeed = startSpeed
 }
 function fail() {
 	playBtn.link.style.display = 'block'
