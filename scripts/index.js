@@ -1,6 +1,9 @@
 import { Element, GameAttribute, GameData, Bottle } from './classes.js'
-import { isTouched, getDistance } from './functions.js';
+import {isTouched, getDistance, switchSiteBg} from './functions.js';
 
+window.onload = () => switchSiteBg()
+
+export const site_bg_amount = 2;
 export const field_width = 900;
 export const field_height = 500;
 export const fps = 60;
@@ -109,6 +112,7 @@ function enemyComing() {
 let bottleAppearingInterval, enemyMovingInterval;
 
 function start() {
+	switchSiteBg()
 	let i = 0;
 	player.setBottom = 0
 	player.setLeft = 0
