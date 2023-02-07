@@ -1,25 +1,5 @@
-function isTouched(el1, el2) {
-	const [x1_1, x1_2, y1_1, y1_2] = [el1.left, el1.left+el1.width, el1.top, el1.top+el1.height]
-	const [x2_1, x2_2, y2_1, y2_2] = [el2.left, el2.left+el2.width, el2.top,  el2.top+el2.height]
-	let horizontal = false, vertical = false;
-	for (let i = x1_1; i <= x1_2; i++) {
-		for (let j = x2_1; j <= x2_2; j++) {
-			if (i === j) {
-				horizontal = true;
-				break;
-			}
-		}
-	}
-	for (let i = y1_1; i <= y1_2; i++) {
-		for (let j = y2_1; j <= y2_2; j++) {
-			if (i === j) {
-				vertical = true;
-				break;
-			}
-		}
-	}
-	return horizontal && vertical;
-}
+import {site_bg_amount} from "./index.js";
+
 function getDistance(el1, el2) {
 	let [left1, right1, bottom1] = [el1.left, el1.right, el1.bottom]
 	let [left2, right2, bottom2] = [el2.left, el2.right, el2.bottom]
@@ -34,4 +14,25 @@ function getDistance(el1, el2) {
 	}
 }
 
-export { isTouched, getDistance }
+function isTouched(el1, el2) {
+	const distance = getDistance(el1, el2)
+	return (distance.horizontal === 0 && distance.vertical === 0);
+}
+
+function switchSiteBg() {
+	const sessionStorageValue = sessionStorage.getItem('side_bg_index')
+	let site_bg_index;
+	if(!sessionStorageValue) {
+		site_bg_index = 0
+		sessionStorage.setItem('side_bg_index', String(site_bg_index))
+	} {
+		site_bg_index = Number(sessionStorageValue)+1;
+		if(site_bg_index === site_bg_amount) {
+			site_bg_index = 0;
+		}
+		sessionStorage.setItem('side_bg_index', String(site_bg_index))
+	}
+	document.querySelector('.list').style.right = `${site_bg_index}00vw`;
+}
+
+export { isTouched, getDistance, switchSiteBg }
