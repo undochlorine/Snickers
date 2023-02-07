@@ -3,12 +3,13 @@ import { isTouched, getDistance } from './functions.js';
 
 export const field_width = 900;
 export const field_height = 500;
+export const fps = 60;
 
 const PLAY_STATE = 'playing at the moment';
 const FAILED_STATE = 'just failed';
 const STATES = [PLAY_STATE, FAILED_STATE]
 const bottles = [];
-const startSpeed = 20;
+const startSpeed = 2;
 
 const user = {
 	_speed: startSpeed,
@@ -41,7 +42,7 @@ const user = {
 	set setSpeed(speed) {
 		this._speed = speed
 		clearInterval(enemyMovingInterval)
-		enemyMovingInterval = setInterval(() => { enemyComing() }, this.speed);
+		enemyMovingInterval = setInterval(() => { enemyComing() }, 1000/fps);
 	},
 	get getState() {
 		return this._state
@@ -94,14 +95,14 @@ function bottleAppearing(i) {
 function enemyComing() {
 	let distance = getDistance(enemy, player)
 	if (distance.horizontal > 0) {
-		enemy.setLeft = enemy.left + 1
+		enemy.setLeft = enemy.left + user.speed
 	} else if (distance.horizontal < 0) {
-		enemy.setLeft = enemy.left - 1
+		enemy.setLeft = enemy.left - user.speed
 	}
 	if (distance.vertical > 0) {
-		enemy.setBottom = enemy.bottom - 1
+		enemy.setBottom = enemy.bottom - user.speed
 	} else if (distance.vertical < 0) {
-		enemy.setBottom = enemy.bottom + 1
+		enemy.setBottom = enemy.bottom + user.speed
 	}
 	isTouched(player, enemy) ? (() => { user.setState = FAILED_STATE })() : 1;
 }
@@ -146,7 +147,7 @@ function collectedBottle() {
 			bottles[i].remove()
 			bottles[i] = null
 			if(user.speed - Math.sqrt(user.speed * 0.001) >= 1)
-				user.setSpeed = user.speed - Math.sqrt(user.speed * 0.002)
+				user.setSpeed = user.speed + Math.sqrt(user.speed * 0.002)
 			continue;
 		}
 	}
