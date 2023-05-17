@@ -4,12 +4,14 @@ import {isTouched, getDistance, switchSiteBg} from './functions.js';
 window.onload = () => switchSiteBg()
 
 export const site_bg_amount = 2;
-export const field_width = 900;
-export const field_height = 500;
+export let field_width = 900;
+export let field_height = 500;
 export const fps = 60;
 
 const PLAY_STATE = 'playing at the moment';
 const FAILED_STATE = 'just failed';
+const TO_FS_CLASS = 'fa-up-right-and-down-left-from-center'
+const TO_NFS_CLASS = 'fa-down-left-and-up-right-to-center'
 const STATES = [PLAY_STATE, FAILED_STATE]
 const bottles = [];
 const startSpeed = 2;
@@ -17,6 +19,7 @@ const startSpeed = 2;
 const user = {
 	_speed: startSpeed,
 	_state: FAILED_STATE,
+	_isFullScreen: false,
 	_count: new GameData({
 		link: document.querySelector('#count'),
 		textContent: 0
@@ -42,6 +45,35 @@ const user = {
 				fail()
 		}
 	},
+	set fullScreen(st) {
+		this._isFullScreen = st
+		document.querySelector(`.full_screen`).classList.remove(st ? TO_FS_CLASS : TO_NFS_CLASS)
+		document.querySelector(`.full_screen`).classList.add(st ? TO_NFS_CLASS: TO_FS_CLASS)
+	},
+	onFullScreen() {
+		document.body.requestFullscreen();
+		this._isFullScreen = true
+		document.querySelector(`.full_screen`).classList.remove(TO_FS_CLASS)
+		document.querySelector(`.full_screen`).classList.add(TO_NFS_CLASS)
+		document.querySelector(`.main`).style.width = '100vw'
+		document.querySelector(`.main`).style.height = '100vh'
+		field_width = getComputedStyle(document.querySelector(`.main`)).width
+		field_height = getComputedStyle(document.querySelector(`.main`)).height
+	},
+	offFullScreen() {
+		if (document.exitFullscreen) {
+			document.exitFullscreen();
+		} else if (document.webkitExitFullscreen) {
+			document.webkitExitFullscreen();
+		} else if (document.mozCancelFullScreen) {
+			document.mozCancelFullScreen();
+		} else if (document.msExitFullscreen) {
+			document.msExitFullscreen();
+		}
+		this._isFullScreen = false
+		document.querySelector(`.full_screen`).classList.remove(TO_NFS_CLASS)
+		document.querySelector(`.full_screen`).classList.add(TO_FS_CLASS)
+	},
 	set setSpeed(speed) {
 		this._speed = speed
 		clearInterval(enemyMovingInterval)
@@ -49,6 +81,9 @@ const user = {
 	},
 	get getState() {
 		return this._state
+	},
+	get fullScreen() {
+		return this._isFullScreen
 	},
 	get score() {
 		return this._score.textContent
@@ -60,6 +95,15 @@ const user = {
 		return this._speed
 	}
 }
+
+document.querySelector(`.full_screen`).onclick = () => {
+	user.fullScreen ? user.offFullScreen() : user.onFullScreen()
+}
+document.body.addEventListener('keydown', (e) => {
+	if(e.key === 'F11') {
+		user.fullScreen = !user.fullScreen
+	}
+})
 
 const playBtn = new Element({
 	link: document.querySelector('#play')
